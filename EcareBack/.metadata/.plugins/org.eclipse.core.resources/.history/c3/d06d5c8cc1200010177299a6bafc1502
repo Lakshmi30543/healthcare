@@ -1,0 +1,6 @@
+package com.sdp.health.repository;
+
+public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+    List<Appointment> findByPatientId(Long patientId);
+}
+

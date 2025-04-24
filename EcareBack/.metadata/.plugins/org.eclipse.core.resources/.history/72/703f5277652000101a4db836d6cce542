@@ -1,0 +1,88 @@
+package com.sdp.health.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sdp.health.model.Doctor;
+import com.sdp.health.repository.DoctorRepository;
+
+@Service
+public class DoctorServiceImpl implements DoctorService {
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+    @Override
+    public String approveDoctor(Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+            .orElseThrow(() -> new RuntimeException("Doctor not found with ID: " + doctorId));
+        doctor.setApproved(true);
+        doctorRepository.save(doctor);
+        return "Doctor approved successfully";
+    }
+
+    @Override
+    public Doctor findById(Long id) {
+        return doctorRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Doctor not found with ID: " + id));
+    }
+    @Override
+    public List<Doctor> getUnapprovedDoctors() {
+        return doctorRepository.findByApprovedFalse(); // custom query
+    }
+
+    @Override
+    public List<Doctor> getApprovedDoctors() {
+        return doctorRepository.findByApprovedTrue(); // custom query
+    }
+    
+    @Override
+    public void rejectDoctor(Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId).orElse(null);
+
+        if (doctor != null) {
+            doctorRepository.delete(doctor);
+        } else {
+            System.out.println("Doctor with ID " + doctorId + " not found.");
+        }
+    }
+    @Override
+    public long countApprovedDoctors() {
+        return doctorRepository.countByApprovedTrue();
+    }
+
+    @Override
+    public long countPendingDoctorApprovals() {
+        return doctorRepository.countByApprovedFalse();
+    }
+    
+    @Override
+    public String updateDoctor(Long doctorId, Doctor request) {
+        Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorId);
+
+        if (optionalDoctor.isEmpty()) {
+            return "Doctor not found";
+        }
+
+        Doctor doctor = optionalDoctor.get();
+
+        // Update only the changed fields
+        doctor.setFullName(request.getFullName());
+        doctor.setDob(request.getDob());
+        doctor.setEmail(request.getEmail());
+        doctor.setContact(request.getContact());
+        doctor.setGender(request.getGender());
+        doctor.setSpecialization(request.getSpecialization());
+        doctor.setQualification(request.getQualification());
+        doctor.setExperienceYears(request.getExperienceYears());
+        doctor.setMedicalLicenseNumber(request.getMedicalLicenseNumber());
+        doctor.setLocation(request.getLocation());
+        doctor.setBio(request.getBio());
+        doctor.setProfileImage(request.getProfileImage());
+
+        doctorRepository.save(doctor);
+        return "Doctor profile updated successfully";
+    }
+
+}

@@ -1,0 +1,24 @@
+package com.sdp.health.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.sdp.health.model.Appointment;
+import com.sdp.health.model.Doctor;
+
+public interface DoctorRepository extends JpaRepository<Doctor, Long> {
+    Optional<Doctor> findByUsername(String username);
+    List<Doctor> findByApprovedTrue();
+    List<Doctor> findByApprovedFalse();
+    long countByApprovedTrue();   
+    long countByApprovedFalse();  
+    
+    
+    
+    
+
+}
