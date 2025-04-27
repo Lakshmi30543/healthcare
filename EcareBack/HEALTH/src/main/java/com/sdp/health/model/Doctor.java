@@ -20,8 +20,7 @@ public class Doctor extends User {
 
     @Column(name = "medicalLicenseNumber", nullable = false, length = 100)
     private String medicalLicenseNumber;
-
- // New fields to be updated by the doctor
+    
     @Column(name = "bio", length = 500)
     private String bio;
 
@@ -30,8 +29,11 @@ public class Doctor extends User {
 
     @Column(name = "address", length = 200)
     private String address;
-    	
-    public String getSpecialization() {
+
+    @Column(name = "profilePictureUrl", length = 255, nullable = true)
+    private String profilePictureUrl;
+   	
+	public String getSpecialization() {
         return specialization;
     }
 
@@ -94,4 +96,12 @@ public class Doctor extends User {
     public void setAddress(String address) {
         this.address = address;
     }
+    
+    public String getProfilePictureUrl() {
+		return profilePictureUrl;
+	}
+
+	public void setProfilePictureUrl(String profilePictureUrl) {
+		this.profilePictureUrl = profilePictureUrl;
+	}
 }

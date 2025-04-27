@@ -40,16 +40,16 @@ const Profile = () => {
     const fetchDoctorData = async () => {
       try {
         setIsLoading(true);
-        // Get doctor ID from localStorage or context
         const doctorId = sessionStorage.getItem('userId');
         
+        // Fetch doctor data
         const response = await axios.get(`${config.url}/eCare/doctor/${doctorId}`);
         
+        // Fetch profile picture URL
+        
+        
         if (response.data) {
-          // Map backend data to our state structure
           const doctor = response.data;
-          
-          // Create formatted doctor data
           const formattedData = {
             name: doctor.fullName || "",
             title: doctor.specialization || "",
@@ -58,7 +58,7 @@ const Profile = () => {
             address: doctor.address || "",
             bio: doctor.bio || "No bio available",
             prize: doctor.prize || "",
-            avatar: doctor.profileImage || defaultAvatar,
+            avatar: doctor.profilePictureUrl || defaultAvatar, // assuming profilePictureUrl is a string URL.
             username: doctor.username || "",
             password: doctor.password || "",
             dob: doctor.dob || "",
@@ -92,7 +92,6 @@ const Profile = () => {
         }
       } catch (error) {
         console.error('Error fetching doctor data:', error);
-        // Keep default data on error
       } finally {
         setIsLoading(false);
       }
@@ -109,20 +108,27 @@ const Profile = () => {
     });
   };
   
-  const handleImageChange = (e) => {
+  const handleFileSelect = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Preview the image
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFormData({
-          ...formData,
-          avatar: reader.result
-        });
+        const imgElement = document.querySelector('.fire-profile-avatar');
+        if (imgElement) {
+          imgElement.src = reader.result;
+        }
       };
       reader.readAsDataURL(file);
+
+      // Update formData with the new file
+      setFormData({
+        ...formData,
+        avatar: file
+      });
     }
   };
-  
+
   const handleImageClick = () => {
     if (isEditing) {
       fileInputRef.current.click();
@@ -132,12 +138,10 @@ const Profile = () => {
   const handleSave = async () => {
     try {
       const doctorId = sessionStorage.getItem('userId');
-      if (!doctorId) {
-        throw new Error('Doctor ID not found');
-      }
+      if (!doctorId) throw new Error('Doctor ID not found');
   
+      // 1. Build update JSON object
       const updateData = {
-        id: parseInt(doctorId),
         fullName: formData.name,
         username: doctorData.username,
         password: doctorData.password,
@@ -149,22 +153,30 @@ const Profile = () => {
         qualification: formData.qualification || doctorData.qualification,
         experienceYears: parseInt(doctorData.stats[0].value) || 0,
         medicalLicenseNumber: formData.medicalLicenseNumber || doctorData.medicalLicenseNumber,
-        profileImage: formData.avatar,
         address: formData.address,
         bio: formData.bio || doctorData.bio,
         prize: formData.prize || "",
         role: doctorData.role
       };
   
-      // ✅ Rename axios config object to avoid conflict with imported `config`
-      const axiosConfig = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        timeout: 10000
-      };
+      // 2. Create FormData and append JSON and image
+      const formDataToSend = new FormData();
+      formDataToSend.append("request", new Blob([JSON.stringify(updateData)], { type: "application/json" }));
   
-      const response = await axios.put(`${config.url}/eCare/doctor/updatedoctor/${doctorId}`, updateData, axiosConfig);
+      // Only add file if new image was selected
+      if (formData.avatar instanceof File) {
+        formDataToSend.append("file", formData.avatar);
+      }
+  
+      // 3. Send request
+      const response = await axios.put(
+        `${config.url}/eCare/doctor/updatedoctor/${doctorId}`,
+        formDataToSend,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          timeout: 10000
+        }
+      );
   
       if (response.data) {
         setDoctorData(formData);
@@ -174,15 +186,13 @@ const Profile = () => {
     } catch (error) {
       console.error('Error updating doctor profile:', error);
       let errorMessage = 'Failed to update profile. ';
-      
       if (error.response) {
-        errorMessage += `Server error: ${error.response.data.message || error.response.data || error.response.status}`;
+        errorMessage += `Server error: ${error.response.data}`;
       } else if (error.request) {
-        errorMessage += 'Server not responding. Please try again later.';
+        errorMessage += 'Server not responding. Try again later.';
       } else {
         errorMessage += error.message;
       }
-      
       alert(errorMessage);
     }
   };
@@ -346,7 +356,7 @@ const Profile = () => {
                 <div className="fire-image-upload-container">
                   <div className="fire-profile-image-edit" onClick={handleImageClick}>
                     <img 
-                      src={formData.avatar} 
+                     src={doctorData.avatar} 
                       alt="Profile" 
                       className="fire-profile-avatar" 
                       onError={(e) => {e.target.src = defaultAvatar}}
@@ -356,12 +366,13 @@ const Profile = () => {
                       <span>Change Photo</span>
                     </div>
                   </div>
+                  
                   <input 
                     type="file" 
                     ref={fileInputRef}
                     accept="image/*" 
                     style={{ display: 'none' }} 
-                    onChange={handleImageChange}
+                    onChange={handleFileSelect}
                   />
                   <p className="fire-image-upload-hint">Click on the image to upload a new profile photo</p>
                 </div>

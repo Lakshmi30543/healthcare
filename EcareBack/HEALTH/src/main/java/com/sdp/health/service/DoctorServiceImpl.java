@@ -1,5 +1,7 @@
 package com.sdp.health.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -10,6 +12,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sdp.health.dto.AppointmentBookingDTO;
 import com.sdp.health.dto.DoctorRegisterRequest;
@@ -73,7 +76,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
     
     @Override
-    public String updateDoctor(Long doctorId, DoctorRegisterRequest request) {
+    public String updateDoctor(Long doctorId, DoctorRegisterRequest request, MultipartFile file) {
         Optional<Doctor> existingDoctor = doctorRepository.findById(doctorId);
 
         if (!existingDoctor.isPresent()) {
@@ -82,7 +85,7 @@ public class DoctorServiceImpl implements DoctorService {
 
         Doctor doctor = existingDoctor.get();
 
-        // Updating the doctor fields with the new data, if present
+        // 1. Update doctor fields (only if present)
         doctor.setFullName(request.getFullName() != null ? request.getFullName() : doctor.getFullName());
         doctor.setUsername(request.getUsername() != null ? request.getUsername() : doctor.getUsername());
         doctor.setPassword(request.getPassword() != null ? request.getPassword() : doctor.getPassword());
@@ -94,16 +97,58 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setQualification(request.getQualification() != null ? request.getQualification() : doctor.getQualification());
         doctor.setExperienceYears(request.getExperienceYears() != 0 ? request.getExperienceYears() : doctor.getExperienceYears());
         doctor.setMedicalLicenseNumber(request.getMedicalLicenseNumber() != null ? request.getMedicalLicenseNumber() : doctor.getMedicalLicenseNumber());
-        
         doctor.setBio(request.getBio() != null ? request.getBio() : doctor.getBio());
         doctor.setPrize(request.getPrize() != null ? request.getPrize() : doctor.getPrize());
         doctor.setAddress(request.getAddress() != null ? request.getAddress() : doctor.getAddress());
-        
-        // Save the updated doctor
+
+        // 2. Upload image with validations
+        if (file != null && !file.isEmpty()) {
+            try {
+                // Validation: check file type
+                String contentType = file.getContentType();
+                if (contentType == null || !contentType.startsWith("image/")) {
+                    return "Invalid file type. Only image files are allowed.";
+                }
+
+                // Validation: check file size (e.g., max 5MB)
+                if (file.getSize() > 5 * 1024 * 1024) {
+                    return "File size too large. Max allowed is 5MB.";
+                }
+
+                // Generate unique filename
+                String uniqueFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+
+                // Full path where the file will be saved (local directory within the frontend folder)
+                String uploadDir = "C:\\Users\\sreyu\\Desktop\\ALLPROJECT\\Health_Care_Appointment_System\\eCare\\public\\"; // Adjust to your path
+
+                String filePath = uploadDir + uniqueFileName;
+
+                // Save image to the filesystem
+                file.transferTo(new File(filePath));
+
+                // Save relative file path for frontend
+                String relativePath = "public/" + uniqueFileName; // Path relative to frontend project
+                doctor.setProfilePictureUrl(relativePath);
+
+            } catch (IOException e) {
+                return "Doctor updated but image upload failed: " + e.getMessage();
+            }
+        }
+
+        // 3. Save doctor to DB
         doctorRepository.save(doctor);
 
         return "Doctor updated successfully!";
     }
+    
+    @Override
+    public String getProfilePictureById(Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+            .orElseThrow(() -> new RuntimeException("Doctor not found with ID: " + doctorId));
+        
+        return doctor.getProfilePictureUrl();
+    }
+    
     
     
     

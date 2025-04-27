@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sdp.health.dto.AppointmentBookingDTO;
 import com.sdp.health.dto.DoctorRegisterRequest;
@@ -48,11 +50,30 @@ public class DoctorController {
     }
     
     @PutMapping("/updatedoctor/{doctorId}")
-    public String updateDoctor(
+    public ResponseEntity<String> updateDoctor(
             @PathVariable Long doctorId, 
-            @RequestBody DoctorRegisterRequest request) {
-        return doctorService.updateDoctor(doctorId, request);
+            @RequestPart("request") DoctorRegisterRequest request,
+            @RequestPart(value = "file", required = false) MultipartFile file) {
+
+        String response = doctorService.updateDoctor(doctorId, request, file);
+
+        if (response.equals("Doctor updated successfully!")) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.badRequest().body(response);
+        }
     }
+    
+    @GetMapping("/profilepictureurl/{doctorId}")
+    public ResponseEntity<String> getProfilePicture(@PathVariable Long doctorId) {
+        try {
+            String profilePictureUrl = doctorService.getProfilePictureById(doctorId);
+            return ResponseEntity.ok(profilePictureUrl);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     
     
     //Appointment

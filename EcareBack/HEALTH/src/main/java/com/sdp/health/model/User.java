@@ -32,6 +32,10 @@ public abstract class User {
 
     @Column(name = "role", nullable = false, length = 50)
     protected String role;
+    
+    
+    
+    
 
     // Getters and Setters
     public Long getId() {

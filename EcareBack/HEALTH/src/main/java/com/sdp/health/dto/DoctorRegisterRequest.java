@@ -18,6 +18,7 @@ public class DoctorRegisterRequest {
     private String bio;
     private String prize;
     private String address;
+    private String profilePictureUrl;
 
     public String getFullName() {
         return fullName;
@@ -105,4 +106,11 @@ public class DoctorRegisterRequest {
     public void setAddress(String address) {
         this.address = address;
     }
+    public String getProfilePictureUrl() {
+		return profilePictureUrl;
+	}
+
+	public void setProfilePictureUrl(String profilePictureUrl) {
+		this.profilePictureUrl = profilePictureUrl;
+	}
 }
