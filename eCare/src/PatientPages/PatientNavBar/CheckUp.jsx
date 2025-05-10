@@ -1,33 +1,31 @@
 import React from 'react';
 import axios from 'axios';
-import config from '../../config'; // Same import path as in Appointment
+import config from '../../config';
 import "../styles/checkup.css";
 
 const checkupPackages = [
-{ id: 1, name: "Basic Health Checkup", tests: "Blood, BP, Sugar", price: "₹499" },
-  { id: 2, name: "Advanced Full Body Checkup", tests: "Liver, Kidney, Thyroid", price: "₹1999" },
-  { id: 3, name: "Heart Checkup", tests: "ECG, Cholesterol, BP", price: "₹1499" },
-  { id: 4, name: "Diabetes Package", tests: "HbA1c, Fasting Sugar", price: "₹899" },
-  { id: 5, name: "Women's Wellness", tests: "Thyroid, CBC, Vitamin D", price: "₹1299" },
-  { id: 6, name: "Men's Wellness", tests: "Prostate, Vitamin B12", price: "₹1299" },
-  { id: 7, name: "Kidney Check", tests: "Creatinine, Urea", price: "₹999" },
-  { id: 8, name: "Liver Function Test", tests: "SGPT, SGOT, Bilirubin", price: "₹1099" },
-  { id: 9, name: "Thyroid Package", tests: "TSH, T3, T4", price: "₹599" },
-  { id: 10, name: "Vitamin Deficiency", tests: "Vitamin D, B12", price: "₹699" },
-  { id: 11, name: "Pre-Marital Checkup", tests: "CBC, HIV, Blood Group", price: "₹1599" },
-  { id: 12, name: "Senior Citizen Checkup", tests: "BP, Sugar, Lipid Profile", price: "₹999" },
-  { id: 13, name: "Child Health Screening", tests: "Growth, Immunity", price: "₹799" },
-  { id: 14, name: "Fitness Check", tests: "BMI, CBC, ECG", price: "₹899" },
-  { id: 15, name: "Executive Health Check", tests: "Full Panel Tests", price: "₹2499" },
+  { id: 1, name: "Basic Health Checkup",  price: "₹499", image: "https://kdahweb-static.kokilabenhospital.com/kdah-2019/shop/package/images/16225515070.jpg" },
+  { id: 2, name: "Full Body Checkup",price: "₹1999", image: "https://www.indushealthplus.com/front/media/package_img/thumbnail_image/1732600980_comprehensive-full-body-checkup.jpg" },
+  { id: 3, name: "Heart Checkup", price: "₹1499", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV7IFlkr9DvYjNBuMWMiIAwkBfuzqdtz3Uog&s" },
+  { id: 4, name: "Diabetes Package", price: "₹899", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB6_WOluyffort5n0SGFNnLiJA8WZ0AFQHug&s" },
+  { id: 5, name: "Women's Wellness",  price: "₹1299", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHLyjtPyly35qC0cCuhmfreVPIU6gZeujQ7A&s" },
+  { id: 6, name: "Men's Wellness",  price: "₹1299", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt5VO6e5iPBYZ_wr6UgoE98baoZEKH__9ZTw&s" },
+  { id: 7, name: "Kidney Check", price: "₹999", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4MA2a-HTRDHigkThFQGAJUIXBMx9bt_6d3w&s" },
+  { id: 8, name: "Liver Function Test", tests: "SGPT, SGOT, Bilirubin", price: "₹1099", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA9Ugn71ldOG-ubocOV4fAXbnVmrz5ozQnmw&s" },
+  { id: 9, name: "Thyroid Package",  price: "₹599", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpG7WdJBB732JfKprMBvVg8Sn_egWcdgEjtg&s" },
+  { id: 10, name: "Vitamin Deficiency",price: "₹699", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJFD9OeDBGtz87sAasyDgtA4txSjW0hw813g&s" },
+  { id: 11, name: "Pre-Marital Checkup", price: "₹1599", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKgd4Pojakt6iMOsj8VtkANFMlouQXOMH5Pg&s" },
+  { id: 12, name: "Senior Citizen Checkup",  price: "₹999", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFF06N4ycP6hjVXuYlgj5ReEuU9igOuXw3cA&s" },
+  { id: 13, name: "Child Health Screening", price: "₹799", image: "https://www.birlahospital.com/wp-content/uploads/2021/10/Birlas-Child-Health-Checkup.jpg" },
+  { id: 14, name: "Fitness Check", price: "₹899", image: "https://jflowershealth.com/wp-content/uploads/2020/09/iStock-1172191646.jpg" },
+  { id: 15, name: "Executive Health Check",  price: "₹2499", image: "https://tulsihospital.com/wp-content/uploads/2021/05/Health-Checkup.jpg" },
 ];
 
 export default function CheckUp() {
   const handleBookNow = async (pkg) => {
     try {
-      // Convert price to number (remove ₹ and convert to paise)
       const amount = parseInt(pkg.price.replace('₹', '')) * 100;
 
-      // Step 1: Create Razorpay order (using config.url like Appointment)
       const paymentRes = await axios.post(`${config.url}/eCare/payment/createOrder`, {
         amount: amount,
         packageId: pkg.id,
@@ -42,9 +40,8 @@ export default function CheckUp() {
 
       const { id, amount: orderAmount, currency } = paymentRes.data;
 
-      // Step 2: Initialize Razorpay checkout
       const options = {
-        key: "rzp_test_RefqIEzM75megk", // Same key as in Appointment
+        key: "rzp_test_RefqIEzM75megk",
         amount: orderAmount,
         currency: currency,
         name: "eCare Health Services",
@@ -52,7 +49,6 @@ export default function CheckUp() {
         order_id: id,
         handler: function(response) {
           alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
-          // You can add additional logic here like saving to database
         },
         prefill: {
           name: "Patient Name",
@@ -60,7 +56,7 @@ export default function CheckUp() {
           contact: "9999999999"
         },
         theme: {
-          color: "#39CABB" // Your teal color
+          color: "#39CABB"
         }
       };
 
@@ -70,6 +66,7 @@ export default function CheckUp() {
         console.error("Payment Failed:", response.error);
       });
       rzp.open();
+      
 
     } catch (err) {
       console.error("Payment init failed:", err);
@@ -83,7 +80,7 @@ export default function CheckUp() {
       <div className="checkup-container">
         {checkupPackages.map((pkg) => (
           <div className="checkup-card" key={pkg.id}>
-            <div className="checkup-icon">🩺</div>
+            <img src={pkg.image} alt={pkg.name} className="checkup-image" />
             <h3>{pkg.name}</h3>
             <p>{pkg.tests}</p>
             <span className="price">{pkg.price}</span>

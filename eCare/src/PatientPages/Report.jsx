@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import config from "../config"; // Adjust path as needed
+import config from "../config"; 
 
 const Report = () => {
   const [prescriptions, setPrescriptions] = useState([]);
@@ -44,7 +44,7 @@ const Report = () => {
             backgroundColor: "#f9f9f9"
           }}>
             <p><strong>Date:</strong> {new Date(prescription.createdAt).toLocaleDateString()}</p>
-            <p><strong>Doctor:</strong> {prescription.doctorName}</p>
+           <p><strong>Doctor:</strong> {prescription.doctor?.fullName}</p>
             <p><strong>Prescription:</strong> {prescription.prescriptionText}</p>
           </div>
         ))
