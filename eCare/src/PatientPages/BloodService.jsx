@@ -1,7 +1,6 @@
 import React from "react";
-import "./styles/bloodservice.css"
-
 import { useNavigate } from "react-router-dom";
+import "./styles/bloodservice.css";
 
 const bloodGroups = [
   { id: 1, type: "A+", price: "$100" },
@@ -17,19 +16,22 @@ const bloodGroups = [
 export default function BloodService() {
   const navigate = useNavigate();
 
-  const handleApply = (bloodType) => {
-    navigate("/patient/applyblood", { state: { bloodType } });
+  const handleApply = (bloodType, price) => {
+    navigate("/patient/applyblood", { state: { bloodType, price } });
   };
 
   return (
     <div className="blood-service-container">
-      <h2>Blood Services</h2>
+      <h2 className="blood-service-heading">Blood Services</h2>
       <div className="blood-list">
         {bloodGroups.map((blood) => (
           <div key={blood.id} className="blood-card">
             <h3>{blood.type}</h3>
             <p className="blood-price">{blood.price}</p>
-            <button className="apply-btn" onClick={() => handleApply(blood.type)}>
+            <button 
+              className="apply-btn" 
+              onClick={() => handleApply(blood.type, blood.price)}
+            >
               Apply
             </button>
           </div>

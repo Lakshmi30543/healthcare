@@ -2,48 +2,139 @@
 .blood-service-container {
     text-align: center;
     padding: 20px;
-  }
+}
+
+.blood-service-heading {
+    color: #39CABB; /* Teal color added */
+    margin-bottom: 20px;
+    font-size: 2rem;
+    border-bottom: #ddd;
+}
   
-  .blood-list {
+.blood-list {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
+}
   
-  }
-  
-  .blood-card {
+.blood-card {
     background: white;
-    color: rgb(2, 2, 2);
+    color: #0d5bcd;
     padding: 15px;
     border-radius: 10px;
     text-align: center;
     width: 150px;
-    box-shadow: 2px 2px 10px rgba(25, 165, 13, 0.2);
+    box-shadow: 2px 2px 10px #39CABB;
     transition: transform 0.2s ease-in-out;
-  }
+    border: 2px solid #39CABB;
+}
   
-  .blood-card:hover {
+.blood-card:hover {
     transform: scale(1.05);
-  }
+    box-shadow: 0 4px 8px #1a73e84d;
+}
   
-  .blood-price {
+.blood-price {
     font-weight: bold;
     font-size: 18px;
-  }
+    color: #0d5bcd;
+}
   
-  .apply-btn {
-    background: rgb(255, 255, 255);
-    color: #ff4d4d;
-    padding: 5px 10px;
+.apply-btn {
+    background: #39CABB;
+    color: white;
+    padding: 8px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
     margin-top: 10px;
-  }
+    transition: background-color 0.3s;
+}
   
-  .apply-btn:hover {
-    background: #f5f5f5;
+.apply-btn:hover {
+    background: #0d5bcd;
+}
+
+
+
+/* Apply Blood Container */
+.apply-blood-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px #39CABB;
+}
+
+.apply-blood-container h2 {
+  color: #39CABB; /* Teal color */
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+/* Form Styling */
+.apply-blood-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.apply-blood-container input {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.apply-blood-container input:focus {
+  outline: none;
+  border-color: #39CABB;
+}
+
+/* Price Display */
+.price-display {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.price-display p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #39CABB;
+}
+
+/* Pay Button */
+.pay-btn {
+  background-color: #39CABB;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 1rem;
+}
+
+.pay-btn:hover {
+  background-color: #2d9e8e;
+}
+
+.pay-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .apply-blood-container {
+    margin: 1rem;
+    padding: 1.5rem;
   }
-  
+}

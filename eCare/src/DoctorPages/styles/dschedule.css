@@ -141,8 +141,36 @@
   align-items: center;
   gap: 10px;
   margin-top: 0;
-  margin-bottom: 0;
+  margin-bottom: 8px; /* Add some space before report button */
   width: 100%;
+}
+
+.musk-report-history-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 44px; /* Align with the consultation status row */
+  width: 100%;
+}
+
+.musk-history-btn {
+  background: #4a6bdf;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 14px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.musk-history-btn:hover {
+  background: #3a5bca;
 }
 
 .musk-appointment-actions {
@@ -296,4 +324,26 @@
 
 .rbc-today {
   background-color: rgba(41, 202, 187, 0.1) !important;
+}
+
+/* Styles for prescription history modal */
+.prescription-history {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.prescription-item {
+  background-color: #f9f9f9;
+  transition: background-color 0.2s;
+}
+
+.prescription-item:hover {
+  background-color: #f0f0f0;
+}
+
+.prescription-content {
+  background-color: white;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
 }

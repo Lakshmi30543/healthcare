@@ -5,6 +5,8 @@ import { useAuth } from "../context/AuthContext";
 import eCareLogo from "../assets/images/eCareLogo.webp";
 import profile from "../assets/images/profile.jpg";
 
+import { FaHome, FaStethoscope, FaHeartbeat, FaSyringe, FaTint, FaCalendarCheck } from "react-icons/fa"; // <-- Add this line
+
 import Consultation from "./PatientNavBar/Consultation";
 import CheckUp from "./PatientNavBar/CheckUp";
 import Vaccination from "./PatientNavBar/Vaccination";
@@ -12,7 +14,7 @@ import Appointment from "./PatientNavBar/Appointment";
 import PatientHome from "./PatientHome";
 import BloodService from "./BloodService";
 import ApplyBlood from "./ApplyBlood";
-import MyAppointments from "./MyAppointments"
+import MyAppointments from "./MyAppointments";
 import "./styles/pnavbar.css";
 import PatientProfile from "./PatientProfile";
 
@@ -41,12 +43,24 @@ function PatientNavbar() {
         </div>
 
         <div className="navbar-center">
-          <Link to="/patient/home" className={`nav-link ${location.pathname === "/patient/home" ? "active" : ""}`}>Home</Link>
-          <Link to="/patient/consultation" className={`nav-link ${location.pathname === "/patient/consultation" ? "active" : ""}`}>Consultation</Link>
-          <Link to="/patient/checkup" className={`nav-link ${location.pathname === "/patient/checkup" ? "active" : ""}`}>CheckUp</Link> 
-          <Link to="/patient/vaccination" className={`nav-link ${location.pathname === "/patient/vaccination" ? "active" : ""}`}>Vaccination</Link>
-          <Link to="/patient/bloodservice" className={`nav-link ${location.pathname === "/patient/bloodservice" ? "active" : ""}`}>Blood Service</Link>
-          <Link to="/patient/myappointments" className={`nav-link ${location.pathname === "/patient/myappointments" ? "active" : ""}`}>My Appointments</Link>
+          <Link to="/patient/home" className={`nav-link ${location.pathname === "/patient/home" ? "active" : ""}`}>
+            <FaHome style={{marginRight: "7px"}} /> Home
+          </Link>
+          <Link to="/patient/consultation" className={`nav-link ${location.pathname === "/patient/consultation" ? "active" : ""}`}>
+            <FaStethoscope style={{marginRight: "7px"}} /> Consultation
+          </Link>
+          <Link to="/patient/checkup" className={`nav-link ${location.pathname === "/patient/checkup" ? "active" : ""}`}>
+            <FaHeartbeat style={{marginRight: "7px"}} /> CheckUp
+          </Link> 
+          <Link to="/patient/vaccination" className={`nav-link ${location.pathname === "/patient/vaccination" ? "active" : ""}`}>
+            <FaSyringe style={{marginRight: "7px"}} /> Vaccination
+          </Link>
+          <Link to="/patient/bloodservice" className={`nav-link ${location.pathname === "/patient/bloodservice" ? "active" : ""}`}>
+            <FaTint style={{marginRight: "7px"}} /> Blood Service
+          </Link>
+          <Link to="/patient/myappointments" className={`nav-link ${location.pathname === "/patient/myappointments" ? "active" : ""}`}>
+            <FaCalendarCheck style={{marginRight: "7px"}} /> My Appointments
+          </Link>
         </div>
 
         <div className="navbar-right">

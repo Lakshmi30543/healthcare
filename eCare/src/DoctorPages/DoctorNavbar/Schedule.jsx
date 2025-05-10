@@ -3,12 +3,87 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { FaCalendarAlt, FaClock, FaFilter, FaUser } from 'react-icons/fa';
+import { FaCalendarAlt, FaClock, FaFilter, FaUser, FaFileAlt } from 'react-icons/fa';
 import { Modal, Button, Form } from 'react-bootstrap';
 import config from '../../config';
 import '../styles/dschedule.css';
 
 const localizer = momentLocalizer(moment);
+
+// Patient Prescription Report Modal Component
+const PrescriptionReportModal = ({ show, handleClose, patientId, patientName }) => {
+  const [prescriptions, setPrescriptions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (show && patientId) {
+      fetchPatientPrescriptions();
+    }
+  }, [show, patientId]);
+
+  const fetchPatientPrescriptions = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      console.log(`Fetching prescriptions for patient ID: ${patientId}`);
+      const response = await axios.get(`${config.url}/ecare/prescriptions/patient/${patientId}`);
+      console.log('Prescription history response:', response.data);
+      
+      setPrescriptions(response.data);
+    } catch (error) {
+      console.error('Error fetching patient prescriptions:', error);
+      setError('Failed to load prescription history. Please try again later.');
+      setPrescriptions([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Modal show={show} onHide={handleClose} size="lg">
+      <Modal.Header closeButton>
+        <Modal.Title>Prescription History for {patientName}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {isLoading ? (
+          <div className="text-center py-4">Loading prescriptions...</div>
+        ) : error ? (
+          <div className="alert alert-danger">{error}</div>
+        ) : prescriptions.length === 0 ? (
+          <div className="alert alert-info">No prescription history found for this patient.</div>
+        ) : (
+          <div className="prescription-history">
+            {prescriptions.map((prescription, index) => (
+              <div key={prescription.id} className="prescription-item mb-4 p-3 border rounded">
+                <div className="d-flex justify-content-between">
+                  <h5>Prescription #{prescription.id}</h5>
+                  <small className="text-muted">
+                    {moment(prescription.createdAt).format('MMMM D, YYYY [at] h:mm A')}
+                  </small>
+                </div>
+                <div className="prescription-content mt-2">
+                  <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit' }}>
+                    {prescription.prescriptionText}
+                  </pre>
+                </div>
+                <div className="prescription-doctor mt-2 text-muted">
+                  <small>Prescribed by: Dr. {prescription.doctorName || 'Unknown'}</small>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
 const PrescriptionModal = ({ show, handleClose, appointment }) => {
   const [prescriptionText, setPrescriptionText] = useState('');
@@ -106,6 +181,7 @@ const PrescriptionModal = ({ show, handleClose, appointment }) => {
     </Modal>
   );
 };
+
 const Schedule = () => {
   const [appointments, setAppointments] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -120,6 +196,10 @@ const Schedule = () => {
   const [dayAppointments, setDayAppointments] = useState([]);
   const [showPrescriptionModal, setShowPrescriptionModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+  // New state for the report modal
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportPatientId, setReportPatientId] = useState(null);
+  const [reportPatientName, setReportPatientName] = useState('');
 
   useEffect(() => {
     fetchAppointmentsForMonth();
@@ -209,6 +289,21 @@ const Schedule = () => {
   const handlePrescriptionClick = (apt) => {
     setSelectedAppointment(apt);
     setShowPrescriptionModal(true);
+  };
+
+  // New handler for Report button click
+  const handleReportClick = (apt) => {
+    const patientId = apt.patient?.id || apt.patientId;
+    const patientName = apt.patient?.fullName || apt.patientName;
+    
+    if (!patientId) {
+      alert('Patient information not available');
+      return;
+    }
+    
+    setReportPatientId(patientId);
+    setReportPatientName(patientName);
+    setShowReportModal(true);
   };
 
   const eventStyleGetter = (event) => {
@@ -342,6 +437,16 @@ const Schedule = () => {
                           Prescription
                         </button>
                       </div>
+                      
+                      {/* New Report Button */}
+                      <div className="musk-report-history-row">
+                        <button
+                          className="musk-history-btn"
+                          onClick={() => handleReportClick(apt)}
+                        >
+                          <FaFileAlt /> View Patient Report
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))
@@ -360,6 +465,16 @@ const Schedule = () => {
           show={showPrescriptionModal}
           handleClose={() => setShowPrescriptionModal(false)}
           appointment={selectedAppointment}
+        />
+      )}
+
+      {/* New Patient Prescription Report Modal */}
+      {showReportModal && (
+        <PrescriptionReportModal
+          show={showReportModal}
+          handleClose={() => setShowReportModal(false)}
+          patientId={reportPatientId}
+          patientName={reportPatientName}
         />
       )}
     </div>

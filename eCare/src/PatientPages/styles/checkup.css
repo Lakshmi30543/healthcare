@@ -3,13 +3,23 @@
 .checkup-section {
     padding: 40px 5%;
     text-align: center;
+    background: #f8fafc; /* Pure white */
+
   }
   
   .checkup-section h2 {
     margin-bottom: 25px;
-    color: #005a87;
+    color: #39CABB;
   }
-  
+
+  /* In your CSS file */
+.checkup-heading {
+  color: #39CABB; /* Google's Material Design blue */
+  /* You can also use other blue shades like: */
+  /* color: #4285f4; (lighter blue) */
+  /* color: #3367d6; (darker blue) */
+  /* color: #1976d2; (classic blue) */
+}
   .checkup-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* Exactly 4 boxes per row */
@@ -17,8 +27,9 @@
     justify-items: center;
   }
   
+
   .checkup-card {
-    border: 2px solid #1ccbe2;
+    border: 2px solid #39CABB;
     border-radius: 10px;
     padding: 20px;
     width: 240px;
@@ -30,11 +41,13 @@
     justify-content: space-between;
     align-items: center;
     text-align: center;
+    box-shadow: 0 4px 8px #39CABB;
+
   }
   
   .checkup-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px #39CABB;
   }
   
   .checkup-icon {
@@ -56,14 +69,14 @@
   
   .price {
     font-weight: bold;
-    color: #1ccbe2;
+    color: #39CABB;
     font-size: 1rem;
     margin-bottom: 10px;
   }
   
   /* Book Now Button */
   .book-btn {
-    background-color: #1ccbe2;
+    background-color: #39CABB;
     color: white;
     border: none;
     padding: 8px 16px;
@@ -74,7 +87,7 @@
   }
   
   .book-btn:hover {
-    background-color: #0aa4bb;
+    background-color: #39CABB;
   }
   
   /* Responsive Design */

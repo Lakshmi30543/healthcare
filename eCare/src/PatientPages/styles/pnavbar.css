@@ -38,8 +38,8 @@
 
 .nav-link:hover,
 .nav-link.active {
-  background: rgba(10, 77, 104, 0.92);
-  color: #fff;
+  /* background: rgba(10, 77, 104, 0.92); */ /* Remove this line */
+  color: #14b8a6;
   box-shadow: 0 2px 8px rgba(10,77,104,0.10);
 }
 

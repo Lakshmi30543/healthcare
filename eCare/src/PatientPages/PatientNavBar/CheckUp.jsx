@@ -1,8 +1,10 @@
 import React from 'react';
-import "../styles/checkup.css"
+import axios from 'axios';
+import config from '../../config'; // Same import path as in Appointment
+import "../styles/checkup.css";
 
 const checkupPackages = [
-  { id: 1, name: "Basic Health Checkup", tests: "Blood, BP, Sugar", price: "₹499" },
+{ id: 1, name: "Basic Health Checkup", tests: "Blood, BP, Sugar", price: "₹499" },
   { id: 2, name: "Advanced Full Body Checkup", tests: "Liver, Kidney, Thyroid", price: "₹1999" },
   { id: 3, name: "Heart Checkup", tests: "ECG, Cholesterol, BP", price: "₹1499" },
   { id: 4, name: "Diabetes Package", tests: "HbA1c, Fasting Sugar", price: "₹899" },
@@ -20,9 +22,64 @@ const checkupPackages = [
 ];
 
 export default function CheckUp() {
+  const handleBookNow = async (pkg) => {
+    try {
+      // Convert price to number (remove ₹ and convert to paise)
+      const amount = parseInt(pkg.price.replace('₹', '')) * 100;
+
+      // Step 1: Create Razorpay order (using config.url like Appointment)
+      const paymentRes = await axios.post(`${config.url}/eCare/payment/createOrder`, {
+        amount: amount,
+        packageId: pkg.id,
+        packageName: pkg.name
+      });
+
+      if (!paymentRes.data || !paymentRes.data.id) {
+        console.error("Payment API response invalid:", paymentRes.data);
+        alert("Payment service is currently unavailable. Please try again later.");
+        return;
+      }
+
+      const { id, amount: orderAmount, currency } = paymentRes.data;
+
+      // Step 2: Initialize Razorpay checkout
+      const options = {
+        key: "rzp_test_RefqIEzM75megk", // Same key as in Appointment
+        amount: orderAmount,
+        currency: currency,
+        name: "eCare Health Services",
+        description: pkg.name,
+        order_id: id,
+        handler: function(response) {
+          alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
+          // You can add additional logic here like saving to database
+        },
+        prefill: {
+          name: "Patient Name",
+          email: "patient@example.com",
+          contact: "9999999999"
+        },
+        theme: {
+          color: "#39CABB" // Your teal color
+        }
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on("payment.failed", function(response) {
+        alert("Payment Failed. Please try again.");
+        console.error("Payment Failed:", response.error);
+      });
+      rzp.open();
+
+    } catch (err) {
+      console.error("Payment init failed:", err);
+      alert("Something went wrong during payment. Please try again.");
+    }
+  };
+
   return (
     <section className="checkup-section">
-      <h2>Health Checkup Packages</h2>
+      <h2 className="checkup-heading">Health Checkup Packages</h2>
       <div className="checkup-container">
         {checkupPackages.map((pkg) => (
           <div className="checkup-card" key={pkg.id}>
@@ -30,7 +87,12 @@ export default function CheckUp() {
             <h3>{pkg.name}</h3>
             <p>{pkg.tests}</p>
             <span className="price">{pkg.price}</span>
-            <button className="book-btn">Book Now</button>
+            <button 
+              className="book-btn" 
+              onClick={() => handleBookNow(pkg)}
+            >
+              Book Now
+            </button>
           </div>
         ))}
       </div>
