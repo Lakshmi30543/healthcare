@@ -1,4 +1,3 @@
-
 /* Aboutus css */
 .about-us-container {
     padding: 80px 20px;
@@ -109,6 +108,7 @@
     color: #1e293b;
     margin-bottom: 20px;
     font-weight: bold;
+    border-bottom: #f8fafc;
   }
   
   .description {

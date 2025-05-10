@@ -1,0 +1,116 @@
+.faq-container {
+  font-family: 'Arial', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.faq-container h1 {
+  color: black;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+
+.subtitle {
+  color: #666;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Side-by-side layout */
+.faq-side-by-side {
+  display: flex;
+  gap: 30px;
+}
+
+.faq-section {
+  flex: 1;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.faq-section h2 {
+  color: white;
+  padding: 15px 20px;
+  margin: 0;
+  font-size: 1.3rem;
+  border-bottom: #e0f2f0;
+}
+
+.faq-questions {
+  padding: 20px;
+}
+
+.faq-item {
+  margin-bottom: 15px;
+  border: 1px solid #e0f2f0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.faq-question {
+  padding: 15px;
+  background-color: #f0fdfa;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: #1a7a6d;
+  transition: all 0.2s;
+}
+
+.faq-question:hover {
+  background-color: #e0faf5;
+}
+
+.faq-question.active {
+  background-color: #39CABB;
+  color: white;
+}
+
+.toggle-icon {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.faq-answer {
+  padding: 15px;
+  background: white;
+  border-top: 1px solid #e0f2f0;
+  color: #555;
+}
+
+/* Responsive - stack on mobile */
+@media (max-width: 768px) {
+  .faq-side-by-side {
+    flex-direction: column;
+  }
+}
+/* Add these styles to your HealthcareFAQ.css */
+.faq-header {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.teal-underline {
+  height: 4px;
+  width: 80px;
+  background-color: #39CABB;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+/* Update your existing h1 style */
+.faq-container h1 {
+  color: black;
+  text-align: center;
+  margin-bottom: 0; /* Changed from 10px to 0 */
+  padding-bottom: 0;
+}

@@ -5,6 +5,7 @@ import About from "../HomePages/HomePageNavbar/About";
 import Program from "../HomePages/HomePageNavbar/Program";
 import Footer from "../HomePages/Footer";
 import Blog from "./HomePageNavbar/Blog";
+import HealthcareFAQ from "./HealthcareFAQ.jsx";
 // import logo from "../assets/images/eCareLogo.webp"; // Ensure the logo import
 function Home() {
   return (
@@ -16,6 +17,7 @@ function Home() {
       <About />
       <Program />
       <Blog/>
+      <HealthcareFAQ/>
       <Footer />
     </>
   );

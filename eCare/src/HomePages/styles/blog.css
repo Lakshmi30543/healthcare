@@ -1,106 +1,178 @@
 /* Blog.css */
-.blog-section {
+.gpt-blog-section {
   background-color: white;
   padding: 3rem 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.blog-container {
+.gpt-blog-container {
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.blog-heading {
-  font-size: 1.875rem;
-  font-weight: bold;
-  color: #111827;
+.gpt-blog-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000;
   margin-bottom: 2rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  padding-bottom: 15px;
+  border-bottom: #e1e1e1;
 }
 
-.blog-grid {
+.gpt-blog-heading:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: #14b8a6;
+}
+
+.gpt-blog-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
 }
 
-.blog-post {
-  background-color: #f9fafb;
-  border-radius: 0.5rem;
+.gpt-blog-post {
+  background-color: #fff;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+  border: 1px solid #e1e1e1;
+}
+
+.gpt-blog-post:hover {
+  transform: translateY(-5px);
+}
+
+.gpt-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.gpt-post-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gpt-date-badge {
+  position: absolute;
+  bottom: 1px;
+  left: 2px;
+  width: 60px;
+  height: 60px;
+  border-radius: 90%;
+  background-color: #000;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-align: center;
+  line-height: 1.2;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+.gpt-post-content {
+  padding: 1.5rem;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
-.post-content {
-  padding: 1.5rem;
-}
-
-.post-header {
+.gpt-post-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 1rem;
 }
 
-.post-category {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #4f46e5;
+.gpt-post-category {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #14b8a6;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.new-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.125rem 0.5rem;
-  border-radius: 9999px;
+.gpt-new-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
   font-size: 0.75rem;
-  font-weight: 500;
-  background-color: #dcfce7;
-  color: #166534;
+  font-weight: 600;
+  background-color: #14b8a6;
+  color: #fff;
 }
 
-.post-title {
+.gpt-post-title {
   font-size: 1.25rem;
-  font-weight: bold;
-  color: #111827;
-  margin-bottom: 0.5rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
 }
 
-.post-excerpt {
-  color: #4b5563;
-  margin-bottom: 1rem;
+.gpt-post-excerpt {
+  color: #555;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  flex-grow: 1;
 }
 
-.learn-more {
-  color: #4f46e5;
-  font-weight: 500;
-}
-
-.learn-more:hover {
-  color: #4338ca;
-}
-
-.post-number {
-  background-color: #e0e7ff;
-  padding: 1rem 1.5rem;
+.gpt-learn-more-container {
+  margin-top: auto;
   text-align: right;
+  padding-top: 1rem;
 }
 
-.post-number span {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #3730a3;
+.gpt-learn-more {
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  transition: color 0.3s ease;
+  padding: 0.5rem 1rem;
+  border: 2px solid #14b8a6;
+  border-radius: 4px;
+  background-color: #14b8a6;
+}
+
+.gpt-learn-more:hover {
+  color: #fff;
+  background-color: #14b8a6;
 }
 
 /* Responsive styles */
 @media (min-width: 768px) {
-  .blog-grid {
+  .gpt-blog-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (min-width: 1024px) {
-  .blog-grid {
+  .gpt-blog-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .gpt-blog-heading {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
   }
 }

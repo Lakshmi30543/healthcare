@@ -144,7 +144,7 @@
 /* Program Button */
 .health-program-btn {
   background-color: transparent;
-  color: #39CABB;
+  color: white;
   border: 2px solid #39CABB;
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -154,6 +154,7 @@
   transition: all 0.3s ease;
   width: 100%;
   text-align: center;
+  background-color: #39CABB;
 }
 
 .health-program-btn:hover {
@@ -172,7 +173,7 @@
 /* View More Button */
 .health-view-more-btn {
   background-color: transparent;
-  color: #39CABB;
+  color: white;
   border: 2px solid #39CABB;
   padding: 0.85rem 2rem;
   border-radius: 8px;
@@ -180,6 +181,7 @@
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  background-color: #39CABB;
 }
 
 .health-view-more-btn:hover {
