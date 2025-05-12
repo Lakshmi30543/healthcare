@@ -69,7 +69,7 @@ export default function Consultation() {
 
   return (
     <div className="doctor-list">
-      <h2>Available Doctors</h2>
+      <center><h2>Available Doctors</h2></center>
 
       <div className="specialization-dropdown">
         <label htmlFor="specialization">Filter by Specialization</label>
@@ -98,14 +98,15 @@ export default function Consultation() {
                   e.target.src = "/src/assets/images/doctor.png";
                 }}
               />
+              <div className="doctor-experience-badge">
+                {doctor.experienceYears}+
+              </div>
               <div className="doctor-main-info">
                 <div className="doctor-name">{doctor.fullName}</div>
                 <div className="doctor-speciality">{doctor.specialization}</div>
-                
               </div>
             </div>
             <div className="doctor-extra-info">
-            <div className="doctor-info">Experience: {doctor.experienceYears} years</div>
               <div className="doctor-info">Qualification: {doctor.qualification}</div>
               <div className="doctor-info">Medical License: {doctor.medicalLicenseNumber}</div>
               <div className="doctor-info">Bio: {doctor.bio}</div>

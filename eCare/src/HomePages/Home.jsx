@@ -6,18 +6,30 @@ import Program from "../HomePages/HomePageNavbar/Program";
 import Footer from "../HomePages/Footer";
 import Blog from "./HomePageNavbar/Blog";
 import HealthcareFAQ from "./HealthcareFAQ.jsx";
-// import logo from "../assets/images/eCareLogo.webp"; // Ensure the logo import
+import Pages from "./HomePageNavbar/Pages.jsx";
+import Contact from "./HomePageNavbar/Contact.jsx";
+
 function Home() {
   return (
     <>
-      {/* Header */}
-      {/* Main Content */}
       <HeroSection />
       <HighlightedDoctors />
-      <About />
-      <Program />
-      <Blog/>
-      <HealthcareFAQ/>
+      <section id="about">
+        <About />
+      </section>
+      <section id="program">
+        <Program />
+      </section>
+      <section id="blog">
+        <Blog />
+      </section>
+      <HealthcareFAQ />
+      <section id="pages">
+        <Pages />
+      </section>
+      <section id="contact">
+        <Contact />
+      </section>
       <Footer />
     </>
   );

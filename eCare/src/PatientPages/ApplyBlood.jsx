@@ -54,7 +54,9 @@ export default function ApplyBlood() {
 
   return (
     <div className="apply-blood-container">
-      <h2>Apply for {bloodType} Blood</h2>
+      <h2>
+        <span className="blood-icon">🩸</span> Apply for {bloodType} Blood
+      </h2>
       <form onSubmit={handlePayment}>
         <input 
           type="text" 

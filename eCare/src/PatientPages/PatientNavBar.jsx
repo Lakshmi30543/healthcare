@@ -25,6 +25,9 @@ function PatientNavbar() {
   const location = useLocation();
   const { setIsPatientLoggedIn } = useAuth();
 
+  // Add this line to get the user's name (replace with actual logic as needed)
+  const userName = "John Doe"; // <-- Replace with actual user name
+
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
@@ -68,24 +71,19 @@ function PatientNavbar() {
         </div>
 
         <div className="navbar-right">
-          <img
-            src={profile}
-            alt="Profile"
-            className="profile-img"
-            onClick={toggleDropdown}
-          />
-          {dropdownOpen && (
-            <div className="dropdown-menu">
-              <Link to="/patient/profile" className="dropdown-item">Profile</Link>
-              <Link to="/patient/settings" className="dropdown-item">Settings</Link>
-              <button onClick={handleLogout} className="dropdown-item logout">Logout</button>
-            </div>
-          )}
+          <div className="profile-name">
+            {userName}
+          </div>
+          <div className="dropdown-menu">
+            <Link to="/patient/profile" className="dropdown-item">Profile</Link>
+            <Link to="/patient/settings" className="dropdown-item">Settings</Link>
+            <button onClick={handleLogout} className="dropdown-item logout">Logout</button>
+          </div>
         </div>
       </div>
 
       {/* Dynamic Content Display */}
-      <div className="patient-content">
+      <div className="boat-patient-content">
         <Routes>
           <Route path="/patient/home" element={<PatientHome />} />
           <Route path="/patient/consultation" element={<Consultation />} />
@@ -97,7 +95,6 @@ function PatientNavbar() {
           <Route path="/patient/myappointments" element={<MyAppointments/>}/>
           <Route path="/patient/profile" element={<PatientProfile/>}/>
           <Route path="/patient/report" element={<Report/>}/>
-          
         </Routes>
       </div>
     </>

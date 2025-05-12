@@ -1,4 +1,4 @@
-/* Navbar Container */
+/* Navbar Container - Now Fixed */
 .pnavbar {
   display: flex;
   justify-content: space-between;
@@ -6,19 +6,22 @@
   background: linear-gradient(90deg, #1e3a8a 70%, #2563eb 100%);
   padding: 12px 30px;
   box-shadow: 0 3px 12px rgba(30, 58, 138, 0.10), 0 1.5px 6px rgba(0,0,0,0.06);
-  z-index: 100;
-  position: relative;
+  z-index: 1000; /* Increased z-index */
+  position: fixed; /* Changed to fixed */
+  width: 100%; /* Full width */
+  top: 0; /* Stick to top */
+  left: 0;
   border-bottom: 1.5px solid #2563eb;
 }
 
-/* Logo Section */
+/* Logo Section - Unchanged */
 .navbar-left .navbar-logo {
   height: 48px;
   width: auto;
   filter: drop-shadow(0 1px 4px rgba(30,58,138,0.10));
 }
 
-/* Center Nav Links */
+/* Center Nav Links - Unchanged */
 .navbar-center {
   display: flex;
   gap: 24px;
@@ -38,7 +41,6 @@
 
 .nav-link:hover,
 .nav-link.active {
-  /* background: rgba(10, 77, 104, 0.92); */ /* Remove this line */
   color: #14b8a6;
   box-shadow: 0 2px 8px rgba(10,77,104,0.10);
 }
@@ -54,7 +56,7 @@
   margin-top: 4px;
 }
 
-/* Right Profile Icon */
+/* Right Profile Icon - Unchanged */
 .navbar-right {
   position: relative;
 }
@@ -74,64 +76,97 @@
   box-shadow: 0 4px 12px rgba(56,189,248,0.15);
 }
 
-/* Dropdown */
+/* Dropdown - Unchanged */
 .dropdown-menu {
   position: absolute;
-  top: 56px;
-  right: 0;
-  background: #ffffff;
-  border: 1px solid #d1d1d1;
-  border-radius: 10px;
-  box-shadow: 0px 8px 24px rgba(30, 58, 138, 0.13);
-  padding: 10px 0;
+  top: 45px;
+  right: -5px;
+  background: #fff;
+  border: 1.5px solid #e0e7ef;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(30, 58, 138, 0.18), 0 1.5px 6px rgba(0,0,0,0.06);
+  padding: 0;
   display: flex;
   flex-direction: column;
-  width: 160px;
+  width: 140px;
   z-index: 999;
   animation: dropdownFadeIn 0.22s;
+  display: none;
 }
 
-@keyframes dropdownFadeIn {
-  from { opacity: 0; transform: translateY(-8px);}
-  to { opacity: 1; transform: translateY(0);}
-}
-
-.dropdown-item {
-  padding: 10px 16px;
+.dropdown-item,
+.logout {
+  padding: 8px 14px;
   text-decoration: none;
-  color: #0a4d68;
+  color: #1e293b;
   font-weight: 500;
+  font-size: 0.93rem;
   transition: background 0.16s, color 0.16s;
   cursor: pointer;
-  border-radius: 6px;
-}
-
-.dropdown-item:hover {
-  background: #e6f7ff;
-  color: #1e3a8a;
-}
-
-.logout {
+  border-radius: 0;
   background: none;
   border: none;
   text-align: left;
   width: 100%;
-  font-size: 15px;
-  color: #d9534f;
-  font-weight: 500;
-  padding: 10px 16px;
-  border-radius: 6px;
-  transition: background 0.16s, color 0.16s;
+}
+
+.dropdown-item:hover {
+  background: #e0f7fa;
+  color: #2563eb;
+  font-weight: 600;
 }
 
 .logout:hover {
   background: #fcebea;
   color: #c9302c;
+  font-weight: 600;
 }
 
-/* Content below navbar */
-.patient-content {
-  padding: 24px;
-  background-color: #f9fcfe;
-  min-height: calc(100vh - 80px);
+/* Round the first and last items */
+.dropdown-item:first-child,
+.logout:first-child {
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+.dropdown-item:last-child,
+.logout:last-child {
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+/* Profile Name - Unchanged */
+.profile-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  min-width: 90px;
+  padding: 0 18px;
+  background: #39cabb;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  border: 2px solid #2563eb;
+  box-shadow: 0 2px 8px rgba(56,189,248,0.10);
+  transition: border 0.18s, box-shadow 0.18s, background 0.18s;
+}
+
+.profile-name:hover {
+  background: #2563eb;
+  border: 2px solid #fff;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(56,189,248,0.15);
+}
+
+/* Show dropdown */
+.navbar-right:hover .dropdown-menu,
+.navbar-right:focus-within .dropdown-menu {
+  display: flex;
+}
+
+/* Add this to prevent content hiding behind fixed navbar */
+body {
+  padding-top: 70px; /* Adjust based on your navbar height */
 }

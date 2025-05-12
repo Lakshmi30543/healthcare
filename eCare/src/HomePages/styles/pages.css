@@ -1,0 +1,126 @@
+/* Color Variables */
+:root {
+  --teal-primary: #008080;
+  --teal-dark: #006666;
+  --teal-light: #4fb3bf;
+  --teal-bg: #e0f2f1;
+  --teal-text: #1d4d4f;
+}
+
+/* Main container */
+.health-pages-container {
+  font-family: 'Roboto', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  color: var(--teal-text);
+  background-color: #f8fbfb;
+}
+
+/* Header styles */
+.health-pages-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 25px;
+  background: linear-gradient(135deg, var(--teal-primary), var(--teal-light));
+  border-radius: 8px;
+  color: white;
+}
+
+.health-pages-title {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.health-pages-subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* Content grid */
+.health-pages-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+/* Card styles */
+.health-pages-card {
+  background: white;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 3px 10px rgba(0, 128, 128, 0.1);
+  transition: all 0.3s ease;
+  text-align: center;
+  border-top: 4px solid var(--teal-primary);
+}
+
+.health-pages-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 128, 128, 0.15);
+}
+
+.health-pages-card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: var(--teal-primary);
+}
+
+.health-pages-card h3 {
+  color: var(--teal-dark);
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+}
+
+.health-pages-card p {
+  color: var(--teal-text);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+/* Button styles */
+.health-pages-button {
+  background-color: var(--teal-primary);
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.health-pages-button:hover {
+  background-color: var(--teal-dark);
+  transform: translateY(-2px);
+}
+
+/* Emergency alert */
+.health-pages-alert {
+  background-color: #fff3e0;
+  border-left: 4px solid #ff9800;
+  padding: 15px;
+  margin-bottom: 30px;
+  border-radius: 4px;
+  color: #e65100;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Footer styles */
+.health-pages-footer {
+  text-align: center;
+  padding: 20px;
+  background-color: var(--teal-bg);
+  border-radius: 8px;
+  color: var(--teal-dark);
+  font-size: 0.9rem;
+}

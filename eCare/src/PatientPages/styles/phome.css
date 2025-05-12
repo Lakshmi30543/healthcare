@@ -1,0 +1,8 @@
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optional: Add spacing for anchor targets if you have a fixed navbar */
+[id] {
+  scroll-margin-top: 80px; /* Adjust this value to match your navbar height */
+}

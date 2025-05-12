@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import config from '../config'; // Ensure this path is correct
+import config from '../config'; 
+import "./styles/pprofile.css";
 
 const defaultAvatar = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath fill='%2329cabb' d='M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-96 55.2C54 332.9 0 401.3 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7c0-81-54-149.4-128-171.1V362c27.6 7.1 48 32.2 48 62v40c0 8.8-7.2 16-16 16H336c-8.8 0-16-7.2-16-16s7.2-16 16-16V424c0-17.7-14.3-32-32-32s-32 14.3-32 32v38c8.8 0 16 7.2 16 16s-7.2 16-16 16H256c-8.8 0-16-7.2-16-16V424c0-29.8 20.4-54.9 48-62V304.9c-6-.6-12.1-.9-18.3-.9H178.3c-6.2 0-12.3 .3-18.3 .9v65.4c23.1 6.9 40 28.3 40 53.7c0 30.9-25.1 56-56 56s-56-25.1-56-56c0-25.4 16.9-46.8 40-53.7V311.2zM144 448a24 24 0 1 0 0-48 24 24 0 1 0 0 48z'/%3E%3C/svg%3E";
 
@@ -111,132 +112,213 @@ export default function PatientProfile() {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="max-w-xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4 text-center">My Profile</h2>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
-        <div style={{ position: 'relative', cursor: isEditable ? 'pointer' : 'default' }} onClick={handleImageClick}>
-          <img
-            src={
-              typeof avatar === 'string'
-                ? avatar
-                : defaultAvatar
-            }
-            alt={patient.fullName}
-            style={{ width: 100, height: 100, borderRadius: '50%', objectFit: 'cover', border: '2px solid #29cabb' }}
-            onError={(e) => { e.target.src = defaultAvatar; }}
-          />
-          {isEditable && (
-            <div style={{
-              position: 'absolute', bottom: 0, right: 0, background: '#29cabb', borderRadius: '50%', padding: 6
-            }}>
-              <span role="img" aria-label="camera" style={{ color: 'white', fontSize: 18 }}>📷</span>
-            </div>
+    <div className="pprofile-container">
+      <div className="pprofile-content">
+        <div className="pprofile-header">
+          <h1>My Profile</h1>
+          {!isEditable && (
+            <button
+              onClick={() => setIsEditable(true)}
+              className="pprofile-edit-btn"
+            >
+              Edit Profile
+            </button>
           )}
         </div>
-        <input
-          type="file"
-          ref={fileInputRef}
-          accept="image/*"
-          style={{ display: 'none' }}
-          onChange={handleFileSelect}
-        />
-      </div>
-      {!isEditable ? (
-        <div>
-          <p><strong>Full Name:</strong> {patient.fullName || "N/A"}</p>
-          <p><strong>Username:</strong> {patient.username || "N/A"}</p>
-          <p><strong>Date of Birth:</strong> {patient.dob || "N/A"}</p>
-          <p><strong>Email:</strong> {patient.email || "N/A"}</p>
-          <p><strong>Contact:</strong> {patient.contact || "N/A"}</p>
-          <p><strong>Gender:</strong> {patient.gender || "N/A"}</p>
-          <p><strong>Blood Group:</strong> {patient.bloodGroup || "N/A"}</p>
-          <p><strong>Address:</strong> {patient.address || "N/A"}</p>
-          <button
-            onClick={() => setIsEditable(true)}
-            className="mt-4 w-full bg-blue-500 text-white p-2 rounded"
-          >
-            Edit Profile
-          </button>
+        <div className="pprofile-card">
+          <div className="pprofile-basic-info">
+            <div
+              className={`pprofile-image-edit${isEditable ? ' editable' : ''}`}
+              onClick={handleImageClick}
+              style={{ cursor: isEditable ? 'pointer' : 'default' }}
+            >
+              <img
+                src={typeof avatar === 'string' ? avatar : defaultAvatar}
+                alt={patient.fullName}
+                className="pprofile-avatar"
+                onError={(e) => { e.target.src = defaultAvatar; }}
+              />
+              {isEditable && (
+                <div className="pprofile-image-overlay">
+                  <span className="pprofile-camera-icon" role="img" aria-label="camera">📷</span>
+                  <span className="pprofile-image-upload-hint">Change</span>
+                </div>
+              )}
+            </div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleFileSelect}
+            />
+            <div className="pprofile-details">
+              <div className="pprofile-name">{patient.fullName || "N/A"}</div>
+              <div className="pprofile-title">{patient.username || "N/A"}</div>
+              <div className="pprofile-contact">
+                <div className="pprofile-contact-item"><strong>Email:</strong> {patient.email || "N/A"}</div>
+                <div className="pprofile-contact-item"><strong>Contact:</strong> {patient.contact || "N/A"}</div>
+                <div className="pprofile-contact-item"><strong>Gender:</strong> {patient.gender || "N/A"}</div>
+                <div className="pprofile-contact-item"><strong>Blood Group:</strong> {patient.bloodGroup || "N/A"}</div>
+              </div>
+            </div>
+          </div>
+          <div className="pprofile-sections">
+            {!isEditable ? (
+              <div className="pprofile-section">
+                <div className="pprofile-info-row">
+                  <div className="pprofile-info-label">Full Name:</div>
+                  <div className="pprofile-info-value">{patient.fullName || "N/A"}</div>
+                </div>
+                <div className="pprofile-info-row">
+                  <div className="pprofile-info-label">Username:</div>
+                  <div className="pprofile-info-value">{patient.username || "N/A"}</div>
+                </div>
+                <div className="pprofile-info-row">
+                  <div className="pprofile-info-label">Date of Birth:</div>
+                  <div className="pprofile-info-value">{patient.dob || "N/A"}</div>
+                </div>
+                <div className="pprofile-info-row">
+                  <div className="pprofile-info-label">Email:</div>
+                  <div className="pprofile-info-value">{patient.email || "N/A"}</div>
+                </div>
+                <div className="pprofile-info-row">
+                  <div className="pprofile-info-label">Contact:</div>
+                  <div className="pprofile-info-value">{patient.contact || "N/A"}</div>
+                </div>
+                <div className="pprofile-info-row">
+                  <div className="pprofile-info-label">Gender:</div>
+                  <div className="pprofile-info-value">{patient.gender || "N/A"}</div>
+                </div>
+                <div className="pprofile-info-row">
+                  <div className="pprofile-info-label">Blood Group:</div>
+                  <div className="pprofile-info-value">{patient.bloodGroup || "N/A"}</div>
+                </div>
+                <div className="pprofile-info-row">
+                  <div className="pprofile-info-label">Address:</div>
+                  <div className="pprofile-info-value">{patient.address || "N/A"}</div>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="pprofile-edit-mode">
+                <div className="pprofile-section">
+                  <div className="pprofile-form-group">
+                    <label>Full Name</label>
+                    <input
+                      type="text"
+                      name="fullName"
+                      value={patient.fullName}
+                      onChange={handleChange}
+                      placeholder="Full Name"
+                      className="pprofile-form-control"
+                    />
+                  </div>
+                  <div className="pprofile-form-group">
+                    <label>Username</label>
+                    <input
+                      type="text"
+                      name="username"
+                      value={patient.username}
+                      onChange={handleChange}
+                      placeholder="Username"
+                      className="pprofile-form-control"
+                    />
+                  </div>
+                  <div className="pprofile-form-group">
+                    <label>Password</label>
+                    <input
+                      type="password"
+                      name="password"
+                      value={patient.password}
+                      onChange={handleChange}
+                      placeholder="Password"
+                      className="pprofile-form-control"
+                    />
+                  </div>
+                  <div className="pprofile-form-group">
+                    <label>Date of Birth</label>
+                    <input
+                      type="text"
+                      name="dob"
+                      value={patient.dob}
+                      onChange={handleChange}
+                      placeholder="Date of Birth"
+                      className="pprofile-form-control"
+                    />
+                  </div>
+                  <div className="pprofile-form-group">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={patient.email}
+                      onChange={handleChange}
+                      placeholder="Email"
+                      className="pprofile-form-control"
+                    />
+                  </div>
+                  <div className="pprofile-form-group">
+                    <label>Contact</label>
+                    <input
+                      type="text"
+                      name="contact"
+                      value={patient.contact}
+                      onChange={handleChange}
+                      placeholder="Contact"
+                      className="pprofile-form-control"
+                    />
+                  </div>
+                  <div className="pprofile-form-group">
+                    <label>Gender</label>
+                    <input
+                      type="text"
+                      name="gender"
+                      value={patient.gender}
+                      onChange={handleChange}
+                      placeholder="Gender"
+                      className="pprofile-form-control"
+                    />
+                  </div>
+                  <div className="pprofile-form-group">
+                    <label>Blood Group</label>
+                    <input
+                      type="text"
+                      name="bloodGroup"
+                      value={patient.bloodGroup}
+                      onChange={handleChange}
+                      placeholder="Blood Group"
+                      className="pprofile-form-control"
+                    />
+                  </div>
+                  <div className="pprofile-form-group">
+                    <label>Address</label>
+                    <input
+                      type="text"
+                      name="address"
+                      value={patient.address}
+                      onChange={handleChange}
+                      placeholder="Address"
+                      className="pprofile-form-control"
+                    />
+                  </div>
+                  <div className="pprofile-action-buttons">
+                    <button type="submit" className="pprofile-save-btn">
+                      Save Changes
+                    </button>
+                    <button
+                      type="button"
+                      className="pprofile-cancel-btn"
+                      onClick={() => setIsEditable(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </form>
+            )}
+          </div>
         </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="grid gap-4">
-          <label>Full Name</label>
-          <input
-            type="text"
-            name="fullName"
-            value={patient.fullName}
-            onChange={handleChange}
-            placeholder="Full Name"
-          />
-          <label>Username</label>
-          <input
-            type="text"
-            name="username"
-            value={patient.username}
-            onChange={handleChange}
-            placeholder="Username"
-          />
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={patient.password}
-            onChange={handleChange}
-            placeholder="Password"
-          />
-          <label>Date of Birth</label>
-          <input
-            type="text"
-            name="dob"
-            value={patient.dob}
-            onChange={handleChange}
-            placeholder="Date of Birth"
-          />
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={patient.email}
-            onChange={handleChange}
-            placeholder="Email"
-          />
-          <label>Contact</label>
-          <input
-            type="text"
-            name="contact"
-            value={patient.contact}
-            onChange={handleChange}
-            placeholder="Contact"
-          />
-          <label>Gender</label>
-          <input
-            type="text"
-            name="gender"
-            value={patient.gender}
-            onChange={handleChange}
-            placeholder="Gender"
-          />
-          <label>Blood Group</label>
-          <input
-            type="text"
-            name="bloodGroup"
-            value={patient.bloodGroup}
-            onChange={handleChange}
-            placeholder="Blood Group"
-          />
-          <label>Address</label>
-          <input
-            type="text"
-            name="address"
-            value={patient.address}
-            onChange={handleChange}
-            placeholder="Address"
-          />
-          <button type="submit" className="mt-4 w-full bg-green-500 text-white p-2 rounded">
-          Save Changes
-          </button>
-        </form>
-      )}
+      </div>
     </div>
   );
 }

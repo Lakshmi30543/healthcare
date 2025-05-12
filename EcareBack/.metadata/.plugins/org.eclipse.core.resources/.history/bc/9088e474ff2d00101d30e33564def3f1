@@ -24,3 +24,5 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
 
 razorpay.key_id=rzp_test_RefqIEzM75megk
 razorpay.key_secret=X6H7dX5llcvz8StgqainRh8F
+
+

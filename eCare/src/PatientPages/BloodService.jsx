@@ -26,10 +26,17 @@ export default function BloodService() {
       <div className="blood-list">
         {bloodGroups.map((blood) => (
           <div key={blood.id} className="blood-card">
-            <h3>{blood.type}</h3>
+            <h3 className="blood-type">
+              <img
+                src="https://static.vecteezy.com/system/resources/thumbnails/054/484/211/small_2x/blood-donation-medical-free-png.png"  
+                alt="blood"
+                className="blood-drop-img"
+              />
+              {blood.type}
+            </h3>
             <p className="blood-price">{blood.price}</p>
-            <button 
-              className="apply-btn" 
+            <button
+              className="apply-btn"
               onClick={() => handleApply(blood.type, blood.price)}
             >
               Apply

@@ -1,60 +1,109 @@
-/* Blood-Service */
+/* Blood-Service Container */
 .blood-service-container {
-    text-align: center;
-    padding: 20px;
+  text-align: center;
+  padding: 20px;
 }
 
+/* Blood-Service Heading */
 .blood-service-heading {
-    color: #39CABB; /* Teal color added */
-    margin-bottom: 20px;
-    font-size: 2rem;
-    border-bottom: #ddd;
+  color: #39CABB;
+  margin-bottom: 20px;
+  font-size: 2.2rem;
 }
-  
+
+/* Blood List - Grid Layout */
 .blood-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  justify-items: center;
+  padding: 0 10px;
 }
-  
+
+/* Blood Card - Styling */
 .blood-card {
-    background: white;
-    color: #0d5bcd;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    width: 150px;
-    box-shadow: 2px 2px 10px #39CABB;
-    transition: transform 0.2s ease-in-out;
-    border: 2px solid #39CABB;
+  background: white;
+  color: #0d5bcd;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  width: 200px;
+  height: 230px;
+  box-shadow: 2px 2px 12px #39CABB;
+  transition: transform 0.2s ease-in-out;
+  border: 2px solid #39CABB;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-  
+
+/* Hover Effects on Blood Card */
 .blood-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px #1a73e84d;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px #1a73e84d;
 }
-  
+
+/* Blood Type Styling */
+.blood-type {
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;  /* Increased gap between image and text */
+  margin-top: 10px;
+}
+
+/* Image size adjustment and outline */
+.blood-drop-img {
+  width: 50px;  /* Increased width to 50px */
+  height: 50px;  /* Increased height to 50px */
+  border: 2px solid #39CABB;  /* Black outline around the image */
+  border-radius: 5px;  /* Optional: gives rounded corners to the border */
+}
+
+/* Blood Price Styling */
 .blood-price {
-    font-weight: bold;
-    font-size: 18px;
-    color: #0d5bcd;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #0d5bcd;
+  margin-top: 10px;  /* Space above the price */
 }
-  
+
+/* Apply Button Styling */
 .apply-btn {
-    background: #39CABB;
-    color: white;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 10px;
-    transition: background-color 0.3s;
+  background: #39CABB;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+  margin-top: 10px;
 }
-  
+
 .apply-btn:hover {
-    background: #0d5bcd;
+  background: #0d5bcd;
+}
+
+/* Responsive: Grid Adjustments for 2 per row on medium screens */
+@media (max-width: 1000px) {
+  .blood-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Responsive: Stack to 1 per row on smaller screens */
+@media (max-width: 600px) {
+  .blood-list {
+    grid-template-columns: 1fr;
+  }
+
+  .apply-blood-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
 }
 
 
@@ -70,7 +119,7 @@
 }
 
 .apply-blood-container h2 {
-  color: #39CABB; /* Teal color */
+  color: #39CABB;
   text-align: center;
   margin-bottom: 1.5rem;
   font-size: 1.8rem;

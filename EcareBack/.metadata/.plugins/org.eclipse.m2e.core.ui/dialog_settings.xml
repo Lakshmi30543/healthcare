@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="C:\Users\sreyu\Desktop\EcareBack"/>
 			<item value="C:\Users\sreyu\Desktop\ALLPROJECT\Health_Care_Appointment_System\Backend\EcareBack\HEALTH"/>
 		</list>
 		<list key="projectNameTemplate">
