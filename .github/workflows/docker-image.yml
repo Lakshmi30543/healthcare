@@ -37,4 +37,4 @@ jobs:
           context: ./eCare
           file: ./eCare/frontend.Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/health-frontend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/healthcare-frontend:latest
