@@ -94,5 +94,4 @@ const HealthcareFAQ = () => {
 };
 
 export default HealthcareFAQ;
-//helloooooooooooooooooooooo
-//endhuku manaki ivi anni
+
