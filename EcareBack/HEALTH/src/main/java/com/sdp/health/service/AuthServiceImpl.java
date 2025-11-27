@@ -1,10 +1,5 @@
 package com.sdp.health.service;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.sdp.health.dto.DoctorRegisterRequest;
 import com.sdp.health.dto.LoginRequest;
 import com.sdp.health.dto.LoginResponse;
@@ -15,6 +10,11 @@ import com.sdp.health.model.Patient;
 import com.sdp.health.repository.AdminRepository;
 import com.sdp.health.repository.DoctorRepository;
 import com.sdp.health.repository.PatientRepository;
+import com.sdp.health.util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -28,6 +28,9 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @Override
     public LoginResponse login(LoginRequest request) {
         String username = request.getUsername();
@@ -38,7 +41,8 @@ public class AuthServiceImpl implements AuthService {
         if (adminOpt.isPresent()) {
             Admin admin = adminOpt.get();
             if (admin.getPassword().equals(password)) {
-                return new LoginResponse("Login successful", admin.getRole(), admin.getId());
+                String token = jwtUtil.generateToken(username, admin.getRole());
+                return new LoginResponse("Login successful", admin.getRole(), admin.getId(), token);
             }
         }
 
@@ -50,7 +54,8 @@ public class AuthServiceImpl implements AuthService {
                 if (!doctor.isApproved()) {
                     return new LoginResponse("Doctor not approved yet", null, null);
                 }
-                return new LoginResponse("Login successful", doctor.getRole(), doctor.getId());
+                String token = jwtUtil.generateToken(username, doctor.getRole());
+                return new LoginResponse("Login successful", doctor.getRole(), doctor.getId(), token);
             }
         }
 
@@ -59,7 +64,8 @@ public class AuthServiceImpl implements AuthService {
         if (patientOpt.isPresent()) {
             Patient patient = patientOpt.get();
             if (patient.getPassword().equals(password)) {
-                return new LoginResponse("Login successful", patient.getRole(), patient.getId());
+                String token = jwtUtil.generateToken(username, patient.getRole());
+                return new LoginResponse("Login successful", patient.getRole(), patient.getId(), token);
             }
         }
 

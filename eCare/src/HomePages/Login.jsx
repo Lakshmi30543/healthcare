@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { User, Lock, Eye, EyeOff } from "lucide-react";
 import axios from "axios";
+import { Eye, EyeOff, Lock, User } from "lucide-react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import config from "../config";
-import { useAuth } from "../context/AuthContext"; // 👈 using context
+import { useAuth } from "../context/AuthContext";
 
-import "./styles/auth.css"
+import "./styles/auth.css";
+
 const Login = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
@@ -13,7 +14,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { setIsAdminLoggedIn, setIsDoctorLoggedIn, setIsPatientLoggedIn } = useAuth(); // 👈 from AuthContext
+  const { setIsAdminLoggedIn, setIsDoctorLoggedIn, setIsPatientLoggedIn } = useAuth();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,17 +62,26 @@ const Login = () => {
       console.log("API Response Data:", response.data);
 
       if (response.status === 200 && response.data) {
-        const { id, role } = response.data;
-      
+        const { id, role, token } = response.data;
+
         console.log("Extracted ID:", id);
         console.log("Extracted Role:", role);
-      
+        console.log("Extracted Token:", token);
+
+        // Save JWT token to sessionStorage
+        if (token) {
+          sessionStorage.setItem("token", token);
+          console.log("✅ Token saved to sessionStorage");
+        } else {
+          console.log("⚠️ No token in response!");
+        }
+
         if (!role || !id) {
           setErrors({ api: "Missing role or ID in response." });
           setLoading(false);
           return;
         }
-      
+
         if (role.toUpperCase() === "ADMIN") {
           setIsAdminLoggedIn(true);
           sessionStorage.setItem("userId", id);
@@ -87,7 +97,7 @@ const Login = () => {
         } else {
           setErrors({ api: "Invalid role received." });
         }
-      }      
+      }
     } catch (error) {
       console.error("Login Error:", error);
       if (error.response) {

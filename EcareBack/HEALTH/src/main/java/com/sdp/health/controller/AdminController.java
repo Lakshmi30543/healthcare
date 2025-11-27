@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sdp.health.annotation.JwtRequired;
 import com.sdp.health.dto.DoctorRegisterRequest;
 import com.sdp.health.model.Doctor;
 import com.sdp.health.model.Patient;
@@ -37,6 +38,7 @@ public class AdminController {
     
     
     @PostMapping("/addDoctor")
+    @JwtRequired(roles = {"ADMIN"})
     public ResponseEntity<String> addDoctor(@RequestBody DoctorRegisterRequest request) {
         String result = adminService.addDoctorByAdmin(request);
         return ResponseEntity.ok(result);

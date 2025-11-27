@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { User, Lock, Eye, EyeOff, Mail, Phone, Calendar, Award, BookOpen, Briefcase } from 'lucide-react';
-import axios from 'axios'; // Make sure to import axios for making API requests
+import axios from 'axios';
+import { Award, BookOpen, Briefcase, Calendar, Eye, EyeOff, Lock, Mail, Phone, User } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import config from '../config';
-import "../HomePages/styles/auth.css"
+import "../HomePages/styles/auth.css";
+
 const AddDoctor = () => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -24,7 +25,7 @@ const AddDoctor = () => {
   const navigate = useNavigate();
 
   const specializations = [
-    'Cardiology', 'Dermatology', 'Neurology', 'Pediatrics', 
+    'Cardiology', 'Dermatology', 'Neurology', 'Pediatrics',
     'Oncology', 'Orthopedics', 'Gynecology', 'Psychiatry',
     'Ophthalmology', 'Radiology', 'Urology', 'Internal Medicine'
   ];
@@ -36,7 +37,6 @@ const AddDoctor = () => {
       [name]: value
     }));
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -54,55 +54,29 @@ const AddDoctor = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{10}$/;
 
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Full name is required';
-    }
-
-    if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
-    }
-
+    if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required';
+    if (!formData.username.trim()) newErrors.username = 'Username is required';
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
-
-    if (!formData.dob) {
-      newErrors.dob = 'Date of birth is required';
-    }
-
+    if (!formData.dob) newErrors.dob = 'Date of birth is required';
     if (!formData.email) {
       newErrors.email = 'Email is required';
     } else if (!emailRegex.test(formData.email)) {
       newErrors.email = 'Invalid email format';
     }
-
     if (!formData.contact) {
       newErrors.contact = 'Contact number is required';
     } else if (!phoneRegex.test(formData.contact)) {
       newErrors.contact = 'Contact must be 10 digits';
     }
-
-    if (!formData.gender) {
-      newErrors.gender = 'Gender is required';
-    }
-
-    if (!formData.medicalLicenseNumber.trim()) {
-      newErrors.medicalLicenseNumber = 'Medical license number is required';
-    }
-
-    if (!formData.specialization) {
-      newErrors.specialization = 'Specialization is required';
-    }
-
-    if (!formData.qualification.trim()) {
-      newErrors.qualification = 'Qualification is required';
-    }
-
-    if (!formData.experienceYears) {
-      newErrors.experienceYears = 'Years of experience is required';
-    }
+    if (!formData.gender) newErrors.gender = 'Gender is required';
+    if (!formData.medicalLicenseNumber.trim()) newErrors.medicalLicenseNumber = 'Medical license number is required';
+    if (!formData.specialization) newErrors.specialization = 'Specialization is required';
+    if (!formData.qualification.trim()) newErrors.qualification = 'Qualification is required';
+    if (!formData.experienceYears) newErrors.experienceYears = 'Years of experience is required';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -111,21 +85,40 @@ const AddDoctor = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-  
+
     try {
+      // Get the JWT token from sessionStorage
+      const token = sessionStorage.getItem("token");
+
+      if (!token) {
+        alert("You must be logged in to add a doctor. Please login first.");
+        navigate("/login");
+        return;
+      }
+
       const response = await axios.post(`${config.url}/eCare/admin/addDoctor`, formData, {
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
       });
-  
+
       if (response.status === 200) {
+        alert("Doctor added successfully!");
         navigate("/admin/home");
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
-      alert(errorMessage);
+      if (error.response?.status === 401) {
+        alert("Unauthorized. Please login again.");
+        navigate("/login");
+      } else if (error.response?.status === 403) {
+        alert("You don't have permission to add doctors.");
+      } else {
+        const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
+        alert(errorMessage);
+      }
     }
   };
-  
 
   return (
     <div className="auth-container">
@@ -134,8 +127,8 @@ const AddDoctor = () => {
           <h1>eCare</h1>
         </div>
 
-        <h2 className="auth-title">Doctor Registration</h2>
-        <p className="auth-subtitle">Create your account to join our healthcare platform</p>
+        <h2 className="auth-title">Add New Doctor (Admin)</h2>
+        <p className="auth-subtitle">Add a new doctor to the healthcare platform</p>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-row">
@@ -345,14 +338,12 @@ const AddDoctor = () => {
             </div>
           </div>
 
-          <button type="submit" className="submit-btn">Register</button>
+          <button type="submit" className="submit-btn">Add Doctor</button>
 
           {errors.server && <p className="error-message server-error">{errors.server}</p>}
         </form>
 
-        <p className="auth-footer">
-          Already have an account? <Link to="/login">Login</Link>
-        </p>
+
       </div>
     </div>
   );

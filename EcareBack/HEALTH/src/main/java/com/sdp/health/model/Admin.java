@@ -19,6 +19,9 @@ public class Admin {
     @Column(name = "role", nullable = false, length = 20)
     private String role ;
 
+    @Column(name = "email", unique = true, nullable = false, length = 50)
+    private String email;
+
     public Long getId() {
         return id;
     }
@@ -49,5 +52,13 @@ public class Admin {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
